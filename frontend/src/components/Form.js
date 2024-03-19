@@ -72,7 +72,7 @@ const Form = ({ getCourses, onEdit, setOnEdit }) => {
                 "rating": course.rating.value,
                 "totalHours": course.totalHours.value,
             })
-            .then(({ data }) => toast.success(data))   
+            .then(() => toast("Form updated successfully"))   
             .catch((error) => toast.error(error));
         } else {
             await axios 
@@ -82,8 +82,27 @@ const Form = ({ getCourses, onEdit, setOnEdit }) => {
                 "rating": course.rating.value,
                 "totalHours": course.totalHours.value,
             })
-            .then(({ data }) => toast.success(data))   
-            .catch((error) => toast.error(error));
+            .then(() => toast.success("Form saved successfully", {
+                position: "top-left",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                })) 
+            .catch((error) => 
+                toast.error("Error Saving Form", {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                }));
+
         }
 
         course.title.value = "";
@@ -113,7 +132,7 @@ const Form = ({ getCourses, onEdit, setOnEdit }) => {
                         <Input name="rating"></Input>
                     </InputArea>
                     <InputArea>
-                        <Label>Total</Label>
+                        <Label>Total Hours</Label>
                         <Input name="totalHours"></Input>
                     </InputArea>
 

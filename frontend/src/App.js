@@ -1,7 +1,7 @@
 import Form from './components/Form.js';
 import { useEffect, useState } from 'react';
 import Grid from './components/Grid.js';
-import { toast } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 
@@ -28,6 +28,17 @@ function App() {
           <h1>Courses</h1>
           <Form onEdit={onEdit} setOnEdit={setOnEdit} getCourses={getCourses}/>
           <Grid courses={courses} setCourses={setCourses} setOnEdit={setOnEdit}/>
+          <ToastContainer position="top-right"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+        />
+
         </div>
     </section>
   );

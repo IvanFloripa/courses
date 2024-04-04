@@ -11,7 +11,7 @@ function App() {
 
   const getCourses = async () => {
     try {
-      const res = await axios.get('http://localhost:3000/course');
+      const res = await axios.get('http://localhost:5004/course');
       setCourses(res.data.sort((a, b) => (a.id > b.id ? 1 : -1)));
     } catch (error) {
       toast.error(error);

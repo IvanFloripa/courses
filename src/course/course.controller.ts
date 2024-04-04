@@ -1,7 +1,8 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query} from '@nestjs/common';
 import { CourseService } from './course.service';
 import { CreateCourseDto } from './dto/create-course.dto';
 import { UpdateCourseDto } from './dto/update-course.dto';
+import { ApiQuery } from '@nestjs/swagger';
 
 @Controller('course')
 export class CourseController {
@@ -20,6 +21,14 @@ export class CourseController {
   @Get(':id')
   async findOne(@Param('id') id: string) {
     return await this.courseService.findOne(+id);
+  }
+
+  @Get('searchTitle/:inputTitle')
+  async findTitle(
+    @Query () inputTitle?: string
+  ) {
+    console.log(inputTitle);
+    // return await this.courseService.findTitle(inputTitle);
   }
 
   @Patch(':id')

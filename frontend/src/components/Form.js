@@ -67,7 +67,7 @@ const Form = ({ getCourses, onEdit, setOnEdit }) => {
 
         if(onEdit) {
             await axios 
-            .patch(`http://localhost:3000/course/${onEdit.id}`, {
+            .patch(`http://localhost:5004/course/${onEdit.id}`, {
                 "description": course.description.value,
                 "rating": course.rating.value,
                 "totalHours": course.totalHours.value,
@@ -76,7 +76,7 @@ const Form = ({ getCourses, onEdit, setOnEdit }) => {
             .catch((error) => toast.error(error));
         } else {
             await axios 
-            .post("http://localhost:3000/course", {
+            .post("http://localhost:5004/course", {
                 "title": course.title.value,
                 "description": course.description.value,
                 "rating": course.rating.value,

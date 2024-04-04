@@ -7,6 +7,7 @@ import { useState } from "react";
 const Grid = ({ courses, setCourses, setOnEdit }) => {
 
     const [currentPage, setCurrentPage] = useState(1);
+    const [courseName, setCourseName] = useState("");
     const recordsPerPage = 5;
     const lastIndex = currentPage * recordsPerPage;
     const firstIndex = lastIndex - recordsPerPage;
@@ -20,7 +21,7 @@ const Grid = ({ courses, setCourses, setOnEdit }) => {
 
     const handleDelete = async (id) => {
         await axios
-            .delete(`http://localhost:3000/course/${id}`)
+            .delete(`http://localhost:5004/course/${id}`)
             .then(({ data }) => {
                 const newArray = courses.filter((course) => course.id !== id);
 
@@ -52,6 +53,15 @@ const Grid = ({ courses, setCourses, setOnEdit }) => {
     return (
         <>
             <div className="container">
+                <input 
+                        type="text"
+                        placeholder="Search Course"
+                        onChange={(e) => setCourseName(e.target.value)}
+                        value={courseName}  />
+
+            </div>
+            <div className="container">
+                
                 <table className="table table-striped">
                     <thead>
                         <tr>

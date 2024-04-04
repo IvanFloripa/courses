@@ -23,6 +23,25 @@ export class CourseService {
     })
   }
 
+  findTitle(inputTitle: string) {
+    let conditionWhere = null;
+
+    if(inputTitle) {
+      conditionWhere = { 
+        title: {
+          contains: inputTitle
+        }
+      }
+    }
+    console.log(conditionWhere);
+    
+    // return this.prisma.course.findMany({
+    //   where: conditionWhere,
+    // })
+  }
+
+ 
+
   update(id: number, updateCourseDto: UpdateCourseDto) {
     return this.prisma.course.update({
       where: { id },

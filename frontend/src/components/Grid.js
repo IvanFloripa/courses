@@ -53,14 +53,6 @@ const Grid = ({ courses, setCourses, setOnEdit }) => {
     return (
         <>
             <div className="container">
-                <input 
-                        type="text"
-                        placeholder="Search Course"
-                        onChange={(e) => setCourseName(e.target.value)}
-                        value={courseName}  />
-
-            </div>
-            <div className="container">
                 
                 <table className="table table-striped">
                     <thead>

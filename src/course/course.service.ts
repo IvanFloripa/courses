@@ -1,4 +1,4 @@
-import { Body, Injectable, Post } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreateCourseDto } from './dto/create-course.dto';
 import { UpdateCourseDto } from './dto/update-course.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -9,8 +9,8 @@ export class CourseService {
 
   create(createCourseDto: CreateCourseDto) {
     return this.prisma.course.create({
-      data: createCourseDto
-    })
+      data: createCourseDto,
+    });
   }
 
   async findAll() {
@@ -19,34 +19,28 @@ export class CourseService {
 
   findOne(id: number) {
     return this.prisma.course.findUnique({
-      where: { id }
-    })
+      where: { id },
+    });
   }
 
   findTitle(inputTitle: string) {
     let conditionWhere = null;
 
-    if(inputTitle) {
-      conditionWhere = { 
+    if (inputTitle) {
+      conditionWhere = {
         title: {
-          contains: inputTitle
-        }
-      }
+          contains: inputTitle,
+        },
+      };
     }
     console.log(conditionWhere);
-    
-    // return this.prisma.course.findMany({
-    //   where: conditionWhere,
-    // })
   }
-
- 
 
   update(id: number, updateCourseDto: UpdateCourseDto) {
     return this.prisma.course.update({
       where: { id },
-      data: updateCourseDto
-    })
+      data: updateCourseDto,
+    });
   }
 
   async remove(id: number) {

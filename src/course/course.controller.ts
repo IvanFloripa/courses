@@ -20,7 +20,6 @@ export class CourseController {
 
   @Get(':id')
   async findOne(@Param('id') id: string) {
-    console.log('execution get');
     return await this.courseService.findOne(+id);
   }
 

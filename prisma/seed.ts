@@ -5,6 +5,24 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 async function main() {
+  const alice = await prisma.user.upsert({
+    where: { email: 'alice@prisma.io' },
+    update: {},
+    create: {
+      email: 'alice@prisma.io',
+      password: 'teste123',
+      name: 'Alice',
+    },
+  });
+  const john = await prisma.user.upsert({
+    where: { email: 'john@prisma.io' },
+    update: {},
+    create: {
+      email: 'john@prisma.io',
+      password: 'john123',
+      name: 'John Doe',
+    },
+  });
   // create two dummy recipes
   const course1 = await prisma.course.upsert({
     where: { title: 'React Practice Course' },
@@ -21,14 +39,14 @@ async function main() {
     where: { title: 'Chicken Curry' },
     update: {},
     create: {
-        title: 'Nest JS Practice Course',
-        description: 'Nestjs practice course for beginners',
-        rating: '4.5',
-        totalHours: '4.5'
-      }
+      title: 'Nest JS Practice Course',
+      description: 'Nestjs practice course for beginners',
+      rating: '4.5',
+      totalHours: '4.5',
+    },
   });
 
-  console.log({ course1, course2 });
+  console.log({ course1, course2, alice, john });
 }
 
 // execute the main function

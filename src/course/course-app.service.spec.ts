@@ -28,7 +28,6 @@ const prismaMock = {
     create: jest.fn().mockReturnValue(mockCourses[1]),
     findMany: jest.fn().mockResolvedValue(mockCourses),
     findUnique: jest.fn().mockResolvedValue(mockCourses[0]),
-    update: jest.fn().mockResolvedValue(mockCourses[0]),
     delete: jest.fn().mockResolvedValue(mockCourses[0]),
   },
 };
@@ -90,6 +89,16 @@ describe('CourseService', () => {
         data: mockCourses[1],
       });
       expect(result).toEqual(mockCourses[1]);
+    });
+  });
+
+  describe('remove', () => {
+    it('should remove a course by id', async () => {
+      const result = await service.remove(1);
+      expect(prisma.course.delete).toHaveBeenCalledWith({
+        where: { id: 1 },
+      });
+      expect(result).toEqual(mockCourses[0]);
     });
   });
 });

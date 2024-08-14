@@ -29,16 +29,20 @@ export class CourseService {
   }
 
   findTitle(inputTitle: string) {
-    let conditionWhere = null;
-
-    if (inputTitle) {
-      conditionWhere = {
+    const course = this.prisma.course.findMany({
+      where: {
         title: {
           contains: inputTitle,
+          mode: 'insensitive',
         },
-      };
+      },
+    });
+
+    if (course) {
+      return course;
+    } else {
+      return null;
     }
-    console.log(conditionWhere);
   }
 
   update(id: number, updateCourseDto: UpdateCourseDto) {

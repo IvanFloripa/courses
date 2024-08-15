@@ -77,8 +77,9 @@ describe('CourseService', () => {
 
   describe('findOne', () => {
     it('should return a course if it exists', async () => {
+      jest.spyOn(prisma.course, 'findUnique').mockResolvedValue(undefined);
       const course = await service.findOne(1);
-      expect(course).toEqual(mockCourses[0]);
+      expect(course).toBeUndefined();
     });
 
     it('should return null if the course does not exist', async () => {
@@ -97,38 +98,45 @@ describe('CourseService', () => {
       });
       expect(result).toEqual(mockCourses[0]);
     });
+
     it('should return null if the course does not exist', async () => {
-      jest.spyOn(prisma.course, 'update').mockResolvedValue(null);
+      jest.spyOn(prisma.course, 'update').mockResolvedValue(undefined);
       const result = await service.update(999, mockCourses[0]);
-      expect(result).toBeNull();
+      expect(result).toBeUndefined();
     });
   });
 
   describe('remove', () => {
     it('should remove a course', async () => {
-      const result = await service.remove(1);
+      const removedCourse = await service.remove(1);
       expect(prisma.course.delete).toHaveBeenCalledWith({ where: { id: 1 } });
-      expect(result).toEqual(mockCourses[0]);
+      expect(removedCourse).toEqual(mockCourses[0]);
+    });
+
+    it('should return null if the course does not exist', async () => {
+      jest.spyOn(prisma.course, 'delete').mockResolvedValue(undefined);
+      const removedCourse = await service.remove(999);
+      expect(removedCourse).toBeUndefined();
     });
   });
 
   describe('findTitle', () => {
     it('should find a course by title', async () => {
       const inputTitle = 'React Practice Course';
-      const result = await service.findTitle(inputTitle);
-      expect(result).toEqual(mockCourses);
+      const course = await service.findTitle(inputTitle);
+      expect(course).toEqual(mockCourses);
     });
 
     it('should return null if no course is found', async () => {
       const inputTitle = 'Non-existent Course';
-      const result = await service.findTitle(inputTitle);
-      expect(result).toEqual(mockCourses);
+      const course = await service.findTitle(inputTitle);
+      expect(course).toEqual(mockCourses);
     });
 
     it('should find a course by partial title', async () => {
       const inputTitle = 'Practice Course';
-      const result = await service.findTitle(inputTitle);
-      expect(result).toEqual(mockCourses);
+      const course = await service.findTitle(inputTitle);
+      expect(course).toEqual(mockCourses);
     });
   });
 });

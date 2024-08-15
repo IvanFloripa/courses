@@ -23,6 +23,11 @@ export class CourseController {
     return await this.courseService.findOne(+id);
   }
 
+  @Get('searchDescription/:inputDescription')
+  async findDescription(@Param('inputDescription') inputDescription?: string) {
+    return await this.courseService.findDescription(inputDescription);
+  }
+
   @Get('searchTitle/:inputTitle')
   async findTitle(@Param('inputTitle') inputTitle?: string) {
     console.log(inputTitle);

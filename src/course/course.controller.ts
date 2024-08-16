@@ -23,17 +23,16 @@ export class CourseController {
     return await this.courseService.findOne(+id);
   }
 
-  @Get('searchDescription/:inputDescription')
-  async findDescription(@Param('inputDescription') inputDescription?: string) {
-    return await this.courseService.findDescription(inputDescription);
-  }
-
   @Get('searchTitle/:inputTitle')
   async findTitle(@Param('inputTitle') inputTitle?: string) {
     console.log(inputTitle);
     return await this.courseService.findTitle(inputTitle);
   }
 
+  @Get('searchDescription/:inputDescription')
+  async findDescription(@Param('inputDescription') inputDescription?: string) {
+    return await this.courseService.findDescription(inputDescription);
+  }
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateCourseDto: UpdateCourseDto) {
     return this.courseService.update(+id, updateCourseDto);

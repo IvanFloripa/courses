@@ -44,6 +44,22 @@ export class CourseService {
       return null;
     }
   }
+  findDescription(inputDescription?: string) {
+    const course = this.prisma.course.findMany({
+      where: {
+        description: {
+          contains: inputDescription,
+          mode: 'insensitive',
+        },
+      },
+    });
+
+    if (course) {
+      return course;
+    } else {
+      return null;
+    }
+  }
 
   update(id: number, updateCourseDto: UpdateCourseDto) {
     return this.prisma.course.update({

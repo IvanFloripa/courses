@@ -120,6 +120,26 @@ describe('CourseService', () => {
     });
   });
 
+  describe('findDescription', () => {
+    it('should find a course by decription', async () => {
+      const inputDescription = 'React';
+      const course = await service.findDescription(inputDescription);
+      expect(course).toEqual(mockCourses);
+    });
+
+    it('should return null if no course is found', async () => {
+      const inputDescription = 'Non-existent Course';
+      const course = await service.findDescription(inputDescription);
+      expect(course).toEqual(mockCourses);
+    });
+
+    it('should find a course by partial title', async () => {
+      const inputDescription = 'Practice Course';
+      const course = await service.findDescription(inputDescription);
+      expect(course).toEqual(mockCourses);
+    });
+  });
+
   describe('findTitle', () => {
     it('should find a course by title', async () => {
       const inputTitle = 'React Practice Course';

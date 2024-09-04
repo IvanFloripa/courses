@@ -17,19 +17,13 @@ export class CourseService {
   }
 
   findOne(id: number) {
-    const course = this.prisma.course.findUnique({
+    return this.prisma.course.findUnique({
       where: { id },
     });
-
-    if (course) {
-      return course;
-    } else {
-      return null;
-    }
   }
 
   findTitle(inputTitle: string) {
-    const course = this.prisma.course.findMany({
+    return this.prisma.course.findMany({
       where: {
         title: {
           contains: inputTitle,
@@ -37,15 +31,9 @@ export class CourseService {
         },
       },
     });
-
-    if (course) {
-      return course;
-    } else {
-      return null;
-    }
   }
   findDescription(inputDescription?: string) {
-    const course = this.prisma.course.findMany({
+    return this.prisma.course.findMany({
       where: {
         description: {
           contains: inputDescription,
@@ -53,12 +41,6 @@ export class CourseService {
         },
       },
     });
-
-    if (course) {
-      return course;
-    } else {
-      return null;
-    }
   }
 
   update(id: number, updateCourseDto: UpdateCourseDto) {

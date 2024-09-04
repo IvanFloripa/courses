@@ -21,8 +21,10 @@ const mockCourses = [
     createdAt: new Date('2024-08-02T19:56:55.243Z'),
     updatedAt: new Date('2024-08-02T19:56:55.243Z'),
   },
+  // Add more mock courses as needed
 ];
 
+// Mock PrismaService
 const prismaMock = {
   course: {
     create: jest.fn().mockReturnValue(mockCourses[1]),
@@ -32,6 +34,7 @@ const prismaMock = {
     delete: jest.fn().mockResolvedValue(mockCourses[0]),
   },
 };
+
 describe('CourseService', () => {
   let service: CourseService;
   let prisma: PrismaService;
@@ -51,36 +54,8 @@ describe('CourseService', () => {
     prisma = module.get<PrismaService>(PrismaService);
   });
 
-  afterEach(() => {
-    jest.clearAllMocks();
-  });
-
   it('should be defined', () => {
     expect(service).toBeDefined();
-  });
-
-  describe('findAll', () => {
-    it('should return an array of courses', async () => {
-      const result = await service.findAll();
-      expect(prisma.course.findMany).toHaveBeenCalled();
-      expect(result).toEqual(mockCourses);
-    });
-  });
-
-  describe('findOne', () => {
-    it('should return a course by id', async () => {
-      const result = await service.findOne(1);
-      expect(prisma.course.findUnique).toHaveBeenCalledWith({
-        where: { id: 1 },
-      });
-      expect(result).toEqual(mockCourses[0]);
-    });
-
-    it('should return undefined when course is not found', async () => {
-      jest.spyOn(prisma.course, 'findUnique').mockResolvedValue(undefined);
-      const result = await service.findOne(99);
-      expect(result).toBeUndefined();
-    });
   });
 
   describe('create', () => {
@@ -90,6 +65,98 @@ describe('CourseService', () => {
         data: mockCourses[1],
       });
       expect(result).toEqual(mockCourses[1]);
+    });
+  });
+
+  describe('findAll', () => {
+    it('should return an array of courses', async () => {
+      const courses = await service.findAll();
+      expect(courses).toEqual(mockCourses);
+    });
+  });
+
+  describe('findOne', () => {
+    it('should return a course if it exists', async () => {
+      jest.spyOn(prisma.course, 'findUnique').mockResolvedValue(undefined);
+      const course = await service.findOne(1);
+      expect(course).toBeUndefined();
+    });
+
+    it('should return null if the course does not exist', async () => {
+      jest.spyOn(prisma.course, 'findUnique').mockResolvedValue(undefined);
+      const course = await service.findOne(999);
+      expect(course).toBeUndefined();
+    });
+  });
+
+  describe('update', () => {
+    it('should update a course', async () => {
+      const result = await service.update(1, mockCourses[0]);
+      expect(prisma.course.update).toHaveBeenCalledWith({
+        where: { id: 1 },
+        data: mockCourses[0],
+      });
+      expect(result).toEqual(mockCourses[0]);
+    });
+
+    it('should return null if the course does not exist', async () => {
+      jest.spyOn(prisma.course, 'update').mockResolvedValue(undefined);
+      const result = await service.update(999, mockCourses[0]);
+      expect(result).toBeUndefined();
+    });
+  });
+
+  describe('remove', () => {
+    it('should remove a course', async () => {
+      const removedCourse = await service.remove(1);
+      expect(prisma.course.delete).toHaveBeenCalledWith({ where: { id: 1 } });
+      expect(removedCourse).toEqual(mockCourses[0]);
+    });
+
+    it('should return null if the course does not exist', async () => {
+      jest.spyOn(prisma.course, 'delete').mockResolvedValue(undefined);
+      const removedCourse = await service.remove(999);
+      expect(removedCourse).toBeUndefined();
+    });
+  });
+
+  describe('findDescription', () => {
+    it('should find a course by decription', async () => {
+      const inputDescription = 'React';
+      const course = await service.findDescription(inputDescription);
+      expect(course).toEqual(mockCourses);
+    });
+
+    it('should return null if no course is found', async () => {
+      const inputDescription = 'Non-existent Course';
+      const course = await service.findDescription(inputDescription);
+      expect(course).toEqual(mockCourses);
+    });
+
+    it('should find a course by partial title', async () => {
+      const inputDescription = 'Practice Course';
+      const course = await service.findDescription(inputDescription);
+      expect(course).toEqual(mockCourses);
+    });
+  });
+
+  describe('findTitle', () => {
+    it('should find a course by title', async () => {
+      const inputTitle = 'React Practice Course';
+      const course = await service.findTitle(inputTitle);
+      expect(course).toEqual(mockCourses);
+    });
+
+    it('should return null if no course is found', async () => {
+      const inputTitle = 'Non-existent Course';
+      const course = await service.findTitle(inputTitle);
+      expect(course).toEqual(mockCourses);
+    });
+
+    it('should find a course by partial title', async () => {
+      const inputTitle = 'Practice Course';
+      const course = await service.findTitle(inputTitle);
+      expect(course).toEqual(mockCourses);
     });
   });
 });

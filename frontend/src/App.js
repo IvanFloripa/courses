@@ -28,7 +28,6 @@ function App() {
     <section id="crud-course">
         <div className="container">
           <h1>Courses</h1>
-          <Login login={login}/>
           <Form onEdit={onEdit} setOnEdit={setOnEdit} getCourses={getCourses}/>
           <Grid courses={courses} setCourses={setCourses} setOnEdit={setOnEdit}/>
           <ToastContainer position="top-right"

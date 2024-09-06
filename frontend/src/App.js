@@ -1,49 +1,23 @@
 import Form from './components/Form.js';
-import { useEffect, useState } from 'react';
-import Grid from './components/Grid.js';
 import Login from './components/Login.js';
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import axios from 'axios';
+import Navbar from './components/Navbar.js';
+import React, {useContext } from 'react';
+import {AuthContext} from './contexts/Auth/AuthContext.js';
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 function App() {
-  const [courses, setCourses] = useState([]);
-  const [onEdit, setOnEdit] = useState(null);
-  const [login] = useState(null);
-
-  const getCourses = async () => {
-    try {
-      const res = await axios.get('http://localhost:5004/course');
-      setCourses(res.data.sort((a, b) => (a.id > b.id ? 1 : -1)));
-    } catch (error) {
-      toast.error(error);
-    }
-  };
-
-  useEffect(() => {
-    getCourses();
-  }, [setCourses]);
-
+  const { auth } = useContext(AuthContext);
+  console.log(auth);
   return (
-    <section id="crud-course">
-        <div className="container">
-          <h1>Courses</h1>
-          <Form onEdit={onEdit} setOnEdit={setOnEdit} getCourses={getCourses}/>
-          <Grid courses={courses} setCourses={setCourses} setOnEdit={setOnEdit}/>
-          <ToastContainer position="top-right"
-            autoClose={5000}
-            hideProgressBar={false}
-            newestOnTop={false}
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-        />
-
-        </div>
-    </section>
+    <Router>
+      <Navbar />
+      <Routes>
+        <Route path="/login" element={<Login />} />
+          { auth ? <Route path="/" element={<Form />} /> : null }
+      </Routes>
+    </Router>
   );
+
 }
 
 export default App;

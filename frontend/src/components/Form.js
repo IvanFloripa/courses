@@ -1,146 +1,45 @@
-import React, { useRef, useEffect } from 'react';
-import styled from 'styled-components';
-import { toast } from 'react-toastify';
+import React, { useEffect, useState } from 'react';
+import Grid from './Grid.js';
+import Fields from './Fields.js';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 
-const FormContainer = styled.form`
-    display: flex;
-    align-items: flex-end;
-    gap: 10px;
-    flex-wrap: wrap;
-    background-color: #fff;
-    padding: 20px;
-    box-shadow: 0 0 5px #ccc;
-    border-radius: 5px;
-`;
 
-const InputArea = styled.div`
-    display: flex;
-    flex-direction: column;
-`;
-
-const Input = styled.input`
-    width: 120px;
-    padding: 0 10px;
-    border: 1px solid #bbb;
-    border-radius: 5px;
-    height: 40px;
-`;
-
-const Label = styled.label``;
-
-const Button = styled.button`
-    padding: 10px;
-    cursor: pointer;
-    border-radius: 5px;
-    border: none;
-    background-color: #2c73d2;
-    color: white;
-    heigth: 42px;
-`;
-
-const Form = ({ getCourses, onEdit, setOnEdit }) => {
-    const ref = useRef();
-    useEffect(() => {
-        if(onEdit){
-            const course = ref.current;
-            course.title.value = onEdit.title;
-            course.description.value = onEdit.description;
-            course.rating.value = onEdit.rating;
-            course.totalHours.value = onEdit.totalHours;
-
-        }
-    }, [onEdit]);
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        const course = ref.current;
-
-        if(
-            !course.title.value ||
-            !course.description.value ||
-            !course.rating.value ||
-            !course.totalHours.value
-        ) {
-            return toast.warn("Fill in all fields");
-        }
-
-        if(onEdit) {
-            await axios 
-            .patch(`http://localhost:5004/course/${onEdit.id}`, {
-                "description": course.description.value,
-                "rating": course.rating.value,
-                "totalHours": course.totalHours.value,
-            })
-            .then(() => toast("Form updated successfully"))   
-            .catch((error) => toast.error(error));
-        } else {
-            await axios 
-            .post("http://localhost:5004/course", {
-                "title": course.title.value,
-                "description": course.description.value,
-                "rating": course.rating.value,
-                "totalHours": course.totalHours.value,
-            })
-            .then(() => toast.success("Form saved successfully", {
-                position: "top-left",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                })) 
-            .catch((error) => 
-                toast.error("Error Saving Form", {
-                    position: "top-right",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "light",
-                }));
-
-        }
-
-        course.title.value = "";
-        course.description.value = "";
-        course.rating.value = "";
-        course.totalHours.value = "";
-
-        setOnEdit(null);
-        getCourses();
-
+function Form () {
+    const [courses, setCourses] = useState([]);
+    const [onEdit, setOnEdit] = useState(null);
+    const getCourses = async () => {
+      try {
+        const res = await axios.get('http://localhost:5004/course');
+        setCourses(res.data.sort((a, b) => (a.id > b.id ? 1 : -1)));
+      } catch (error) {
+        toast.error(error);
+      }
     };
+  
+    useEffect(() => {
+      getCourses();
+    }, [setCourses]);
 
     return (
-        <section className="mb-4">
-            <div className="container">
-                <FormContainer ref={ref} onSubmit={handleSubmit}>
-                    <InputArea>
-                        <Label>Title</Label>
-                        <Input name="title"></Input>
-                    </InputArea>
-                    <InputArea>
-                        <Label>Description</Label>
-                        <Input name="description"></Input>
-                    </InputArea>
-                    <InputArea>
-                        <Label>Rating</Label>
-                        <Input name="rating"></Input>
-                    </InputArea>
-                    <InputArea>
-                        <Label>Total Hours</Label>
-                        <Input name="totalHours"></Input>
-                    </InputArea>
-
-                    <Button type="submit">Save</Button>
-                </FormContainer>
+        <div className="container p-4">
+            <div className="row">
+                <h1>Courses</h1>
+                    <Fields onEdit={onEdit} setOnEdit={setOnEdit} getCourses={getCourses}/>
+                    <Grid courses={courses} setCourses={setCourses} setOnEdit={setOnEdit}/>
+                    <ToastContainer position="top-right"
+                        autoClose={5000}
+                        hideProgressBar={false}
+                        newestOnTop={false}
+                        closeOnClick
+                        rtl={false}
+                        pauseOnFocusLoss
+                        draggable
+                        pauseOnHover
+                    />
             </div>
-        </section>
-        
+        </div>
     );
 };
 

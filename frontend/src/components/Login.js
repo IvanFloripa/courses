@@ -1,10 +1,16 @@
 // import React from 'react';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../contexts/Auth/AuthContext';
+import { toast } from 'react-toastify';
 import axios from "axios";
 
 function Login (login) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const { auth, setAuth  } = useContext(AuthContext);
+  const navigate = useNavigate();
+
 
   const handleSubmit = async (event) => {
     event.preventDefault()
@@ -16,23 +22,20 @@ function Login (login) {
           password: password
         })
         .then(({ data }) => {
-          console.log(data);
-            // const newArray = courses.filter((course) => course.id !== id);
-
-            // setCourses(newArray);
-            // toast.success(data);
+          setAuth(true);
+          navigate("/");
+            // toast.success("Logado com sucesso!");
         })
         .catch((error) => {
-            // toast.error(error);
+            toast.error("Erro no login");
         });
-    // setOnEdit(null);
 };
   return (
     <div className="container">
       <div className="row">
         <form onSubmit={handleSubmit}>
           <div className="col-6">
-            <label for="staticEmail">Email</label>
+            <label className="staticEmail">Email</label>
             <input 
              type='email'
              className='form-control' 
@@ -42,7 +45,7 @@ function Login (login) {
             />
           </div>
           <div className="col-6">
-            <label for="staticPassword">Password</label>
+            <label className="staticPassword">Password</label>
             <input 
              type='password' 
              className='form-control' 
@@ -50,7 +53,7 @@ function Login (login) {
              value={password}
              onChange={(e) => setPassword(e.target.value)}/>
           </div>
-          <button type="submit" class="btn btn-primary">Submit</button>
+          <button type="submit" className="btn btn-primary">Submit</button>
         </form>
       </div>
     </div>

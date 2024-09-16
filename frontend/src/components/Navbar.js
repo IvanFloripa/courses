@@ -12,11 +12,15 @@ function Navbar() {
     <nav className="navbar navbar-expand-sm bg-dark navbar-dark justify-content-between">
       <Link className="navbar-brand" to="/">
       </Link>
-
       <ul className="navbar-nav right-margin">
-      <li className="nav-item">
+        <li className="nav-item">
           <Link to="/" className="nav-link">
             Home
+          </Link>
+        </li>
+        <li className="nav-item">
+          <Link to="/user" className="nav-link">
+            Users
           </Link>
         </li>
         <li className="nav-item">
@@ -25,15 +29,15 @@ function Navbar() {
           </Link>
         </li>
         <li className="nav-item">
-                <Link 
-                  to="/" 
-                  className="nav-link"
-                  onClick={()=> { 
-                    setAuth(false)
-                    }}>
-                  Logout
-                </Link>
-              </li>
+          <Link 
+            to="/login" 
+            className="nav-link"
+            onClick={()=> { 
+              setAuth(false)
+              }}>
+            Logout
+          </Link>
+        </li>
       </ul>
     </nav>
   );

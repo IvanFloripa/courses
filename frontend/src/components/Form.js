@@ -17,6 +17,7 @@ function Form () {
         toast.error(error);
       }
     };
+    console.log(courses);
   
     useEffect(() => {
       getCourses();

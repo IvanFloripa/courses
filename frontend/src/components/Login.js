@@ -8,7 +8,7 @@ import axios from "axios";
 function Login (login) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { auth, setAuth  } = useContext(AuthContext);
+  const { setAuth  } = useContext(AuthContext);
   const navigate = useNavigate();
 
 
@@ -23,18 +23,19 @@ function Login (login) {
         })
         .then(({ data }) => {
           setAuth(true);
+          toast.success("Logado com sucesso!");
           navigate("/");
-            // toast.success("Logado com sucesso!");
         })
         .catch((error) => {
             toast.error("Erro no login");
         });
-};
+  };
   return (
-    <div className="container">
+    <div className="container p-4">
       <div className="row">
+        <h1>Login</h1>
         <form onSubmit={handleSubmit}>
-          <div className="col-6">
+          <div className="col-6 mb-3">
             <label className="staticEmail">Email</label>
             <input 
              type='email'
@@ -44,7 +45,7 @@ function Login (login) {
              onChange={(e) => setEmail(e.target.value)}
             />
           </div>
-          <div className="col-6">
+          <div className="col-6 mb-3">
             <label className="staticPassword">Password</label>
             <input 
              type='password' 
@@ -53,7 +54,9 @@ function Login (login) {
              value={password}
              onChange={(e) => setPassword(e.target.value)}/>
           </div>
-          <button type="submit" className="btn btn-primary">Submit</button>
+          <div className="col-6 mb-3">
+            <button type="submit" className="btn btn-primary">Submit</button>
+          </div>
         </form>
       </div>
     </div>

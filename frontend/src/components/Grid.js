@@ -7,7 +7,6 @@ import { useState } from "react";
 const Grid = ({ courses, setCourses, setOnEdit }) => {
 
     const [currentPage, setCurrentPage] = useState(1);
-    const [courseName, setCourseName] = useState("");
     const recordsPerPage = 5;
     const lastIndex = currentPage * recordsPerPage;
     const firstIndex = lastIndex - recordsPerPage;
@@ -53,7 +52,6 @@ const Grid = ({ courses, setCourses, setOnEdit }) => {
     return (
         <>
             <div className="container">
-                
                 <table className="table table-striped">
                     <thead>
                         <tr>
@@ -79,7 +77,7 @@ const Grid = ({ courses, setCourses, setOnEdit }) => {
                                 </td>
                                 <td>
                                     <FaTrash onClick={() => handleDelete(item.id)}/>
-                            </td>
+                                </td>
                         </tr>
                     ))}</tbody>
                 </table>
@@ -101,7 +99,6 @@ const Grid = ({ courses, setCourses, setOnEdit }) => {
                     </ul>
                 </nav>
             </div>
-            
         </>
     );
 };

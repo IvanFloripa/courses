@@ -82,7 +82,7 @@ const Fields = ({ getCourses, onEdit, setOnEdit }) => {
                 "rating": course.rating.value,
                 "totalHours": course.totalHours.value,
             })
-            .then(() => toast.success("Form saved successfully", {
+            .then(() => toast.success("Curso Salvo com sucesso!", {
                 position: "top-left",
                 autoClose: 5000,
                 hideProgressBar: false,

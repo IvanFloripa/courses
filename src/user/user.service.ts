@@ -39,7 +39,6 @@ export class UserService {
     });
   }
   findAll() {
-    console.log('findAll');
     return this.prisma.user.findMany();
   }
 
